@@ -1,0 +1,18 @@
+[
+	{
+		"region":1,
+		"start":832695,
+		"stop":886513,
+		"completeness":"intact",
+		"most_common_phage":"PHAGE_Bacill_phi105_NC_048631",
+		"GC":42.08
+	},
+	{
+		"region":2,
+		"start":2885028,
+		"stop":2924081,
+		"completeness":"intact",
+		"most_common_phage":"PHAGE_Brevib_Osiris_NC_028969",
+		"GC":46.69
+	}
+]

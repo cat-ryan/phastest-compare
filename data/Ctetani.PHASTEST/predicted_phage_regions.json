@@ -1,0 +1,26 @@
+[
+	{
+		"region":1,
+		"start":1137516,
+		"stop":1192483,
+		"completeness":"intact",
+		"most_common_phage":"PHAGE_Clostr_phiCTC2A_NC_030949",
+		"GC":28.38
+	},
+	{
+		"region":2,
+		"start":1656925,
+		"stop":1707039,
+		"completeness":"intact",
+		"most_common_phage":"PHAGE_Clostr_phiCT19406C_NC_029006",
+		"GC":28.69
+	},
+	{
+		"region":3,
+		"start":2244315,
+		"stop":2282092,
+		"completeness":"intact",
+		"most_common_phage":"PHAGE_Clostr_phiCT19406B_NC_030947",
+		"GC":29.11
+	}
+]
