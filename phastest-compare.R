@@ -4,40 +4,32 @@ library('paletteer')
 library('dplyr')
 library('jsonlite')
 #####Setup######
-BAproph <- fromJSON("PHASTEST/Banthracis.PHASTEST/predicted_genes.json", flatten=TRUE)
-BAproph<-BAproph%>%
-  mutate(genus=('Bacillus'),species=('anthracis'),.before=index)
 
-BCproph <- fromJSON("PHASTEST/Bcereus.PHASTEST/predicted_genes.json", flatten=TRUE)
-BCproph<-BCproph%>%
-  mutate(genus=('Bacillus'),species=('cereus'),.before=index)
+#Function to put JSON files into a list
+process_data <- function(file_path, genus, species) {
+  fromJSON(file_path, flatten = TRUE) %>%
+    mutate(genus = genus, species = species, .before = index)
+}
 
-BTproph <- fromJSON("PHASTEST/Bthuringiensis.PHASTEST/predicted_genes.json", flatten=TRUE)
-BTproph<-BTproph%>%
-  mutate(genus=('Bacillus'),species=('thuringiensis'),.before=index)
+# Create list of file paths and corresponding genus and species
+data_list <- list(
+  list(file = "data/Banthracis.PHASTEST/predicted_genes.json", genus = "Bacillus", species = "anthracis"),
+  list(file = "data/Bcereus.PHASTEST/predicted_genes.json", genus = "Bacillus", species = "cereus"),
+  list(file = "data/Bthuringiensis.PHASTEST/predicted_genes.json", genus = "Bacillus", species = "thuringiensis"),
+  list(file = "data/Blicheniformis.PHASTEST/predicted_genes.json", genus = "Bacillus", species = "licheniformis"),
+  list(file = "data/Cbotulinum.PHASTEST/predicted_genes.json", genus = "Clostridium", species = "botulinum"),
+  list(file = "data/Cdifficile.PHASTEST/predicted_genes.json", genus = "Clostridium", species = "difficile"),
+  list(file = "data/Cperf.PHASTEST/predicted_genes.json", genus = "Clostridium", species = "perfringens"),
+  list(file = "data/Ctetani.PHASTEST/predicted_genes.json", genus = "Clostridium", species = "tetani")
+)
 
-BLproph <- fromJSON("PHASTEST/Blicheniformis.PHASTEST/predicted_genes.json", flatten=TRUE)
-BLproph<-BLproph%>%
-  mutate(genus=('Bacillus'),species=('licheniformis'),.before=index)
+# Apply function to each organism
+proph_data <- lapply(data_list, function(x) {
+  process_data(x$file, x$genus, x$species)
+})
 
-CBproph <- fromJSON("PHASTEST/Cbotulinum.PHASTEST/predicted_genes.json", flatten=TRUE)
-CBproph<-CBproph%>%
-  mutate(genus=('Clostridium'),species=('botulinum'),.before=index)
-
-CDproph <- fromJSON("PHASTEST/Cdifficile.PHASTEST/predicted_genes.json", flatten=TRUE)
-CDproph<-CDproph%>%
-  mutate(genus=('Clostridium'),species=('difficile'),.before=index)
-
-CPproph <- fromJSON("PHASTEST/Cperf.PHASTEST/predicted_genes.json", flatten=TRUE)
-CPproph<-CPproph%>%
-  mutate(genus=('Clostridium'),species=('perfringens'),.before=index)
-
-CTproph <- fromJSON("PHASTEST/Ctetani.PHASTEST/predicted_genes.json", flatten=TRUE)
-CTproph<-CTproph%>%
-  mutate(genus=('Clostridium'),species=('tetani'),.before=index)
-
-#combine the data frames for each organism
-phage<-rbind(CTproph,CPproph,CDproph,CBproph,BLproph,BAproph,BTproph,BCproph)
+#combine each organism into one data frame
+phage <- do.call(rbind, proph_data[c(8, 7, 6, 5, 4, 1, 3, 2)])
 
 #rm rows for genes not in a prophage region
 phage <- phage[phage$region_index != "Bacterial", ]
